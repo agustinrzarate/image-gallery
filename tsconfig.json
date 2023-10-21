@@ -22,7 +22,7 @@
     "noFallthroughCasesInSwitch": true,
     "paths": {
       "@/*": ["./src/*"],
-      "@ui/": ["./src/ui/*"],
+      "@ui/*": ["./src/ui/*"],
     }
   },
   "include": ["src"],
