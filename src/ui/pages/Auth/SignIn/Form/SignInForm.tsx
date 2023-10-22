@@ -7,7 +7,6 @@ import * as z from 'zod';
 import { Button } from '@/ui/components/Button/Button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/components/Form/Form';
 import { Input } from '@/ui/components//Input/Input';
-import { toast } from '@/ui/components/Toast/use-toast';
 
 export function SignInForm() {
   const FormSchema = z.object({
@@ -45,14 +44,7 @@ export function SignInForm() {
   }
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      title: 'You submitted the following values:',
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+    console.log(data);
   }
 
   return (
@@ -86,10 +78,11 @@ export function SignInForm() {
             )}
           />
         </div>
-
-        <Button type="submit" className="w-full">
-          Submit
-        </Button>
+        <div className="flex justify-center">
+          <Button type="submit" className="px-7">
+            Sign In
+          </Button>
+        </div>
       </form>
     </Form>
   );
