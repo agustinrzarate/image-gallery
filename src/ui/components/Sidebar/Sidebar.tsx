@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
+import { Outlet } from 'react-router';
+
 import { clsx } from 'clsx';
 import { BookmarkIcon, ImageIcon, ExitIcon, Cross2Icon, HamburgerMenuIcon } from '@radix-ui/react-icons';
 import ImageGallery from '@/app/assets/ImageGallery.svg';
@@ -17,7 +19,7 @@ function Sidebar() {
             Gallery
           </Button>
           <Button variant="ghost" className="justify-start">
-            <BookmarkIcon className="mr-3" /> Bookmarks
+            <BookmarkIcon className="mr-3" /> Saved images
           </Button>
         </div>
         <div className="flex flex-col w-48 mx-auto absolute bottom-6 left-6">
@@ -30,7 +32,7 @@ function Sidebar() {
   );
 }
 
-function SidebarLayout({ children }: { children: React.ReactNode }) {
+function SidebarLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -86,7 +88,9 @@ function SidebarLayout({ children }: { children: React.ReactNode }) {
             <HamburgerMenuIcon />
           </Button>
         </div>
-        {children}
+        <div className="p-9">
+          <Outlet />
+        </div>
       </div>
     </div>
   );

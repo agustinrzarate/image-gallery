@@ -1,16 +1,22 @@
+import { QueryClient, QueryClientProvider } from 'react-query';
+
 import { ThemeProvider } from '@ui/components/ThemeProvider/ThemeProvider';
 import MaxWidthWrapper from '@/ui/components/MaxWidthWrapper/MaxWidthWrapper';
 import { Toaster } from '@/ui/components/Toast/toaster';
 import Router from './router/router';
 
+const queryClient = new QueryClient();
+
 function App() {
   return (
-    <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-      <MaxWidthWrapper>
-        <Toaster />
-        <Router />
-      </MaxWidthWrapper>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+        <MaxWidthWrapper>
+          <Toaster />
+          <Router />
+        </MaxWidthWrapper>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
 
