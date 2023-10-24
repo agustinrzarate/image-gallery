@@ -1,14 +1,17 @@
-'use client';
-
+import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import { Eye, EyeOff } from 'lucide-react';
 
 import { Button } from '@/ui/components/Button/Button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/components/Form/Form';
 import { Input } from '@/ui/components//Input/Input';
+import { useAuth } from '../../context/AuthProvider';
 
 export function SignInForm() {
+  const [showPassword, setShowPassword] = useState(false);
+  const { login } = useAuth();
   const FormSchema = z.object({
     username: z
       .string()
@@ -44,7 +47,7 @@ export function SignInForm() {
   }
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
+    login(data);
   }
 
   return (
@@ -68,11 +71,22 @@ export function SignInForm() {
             control={form.control}
             name="password"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="relative">
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="password" {...field} />
+                  <Input placeholder="password" {...field} type={showPassword ? 'text' : 'password'} />
                 </FormControl>
+                <Button
+                  variant="ghost"
+                  className="absolute top-6 right-0"
+                  size="icon"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setShowPassword(!showPassword);
+                  }}
+                >
+                  {showPassword ? <Eye /> : <EyeOff />}
+                </Button>
                 <FormMessage />
               </FormItem>
             )}

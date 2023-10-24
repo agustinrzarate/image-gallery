@@ -5,7 +5,14 @@ import MaxWidthWrapper from '@/ui/components/MaxWidthWrapper/MaxWidthWrapper';
 import { Toaster } from '@/ui/components/Toast/toaster';
 import Router from './router/router';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    },
+  },
+});
 
 function App() {
   return (

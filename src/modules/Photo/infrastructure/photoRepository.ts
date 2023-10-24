@@ -1,5 +1,8 @@
+import { KeysLocalStorage } from '@/app/localStorage/keys';
 import Photo from '../domain/Photo';
 import IPhotoRepository from '../domain/PhotoRepository';
+import { getItemLocalStorage } from '@/app/localStorage/getItem';
+import { setItemLocalStorage } from '@/app/localStorage/setItem';
 
 const url = 'https://picsum.photos/';
 
@@ -11,7 +14,6 @@ export default function photoRepository(): IPhotoRepository {
           method: 'GET',
         });
         const photos = await response.json();
-        console.log('photos: ', photos);
         return photos as Photo[];
       } catch (error) {
         throw new Error((error as Response).statusText);
@@ -27,6 +29,18 @@ export default function photoRepository(): IPhotoRepository {
       } catch (error) {
         throw new Error((error as Response).statusText);
       }
+    },
+    addSavedPhoto: function addSavedPhoto(photo: Photo) {
+      const savedPhotos = getItemLocalStorage(KeysLocalStorage.savedPhotos);
+      const photos = JSON.parse(savedPhotos || '[]');
+      photos.push(photo);
+      setItemLocalStorage(KeysLocalStorage.savedPhotos, photos);
+    },
+    deleteSavedPhoto: function deleteSavedPhoto(id: string) {
+      const savedPhotos = getItemLocalStorage(KeysLocalStorage.savedPhotos);
+      const photos = JSON.parse(savedPhotos || '[]');
+      const newPhotos = photos.filter((photo: Photo) => photo.id !== id);
+      setItemLocalStorage(KeysLocalStorage.savedPhotos, newPhotos);
     },
   };
 }

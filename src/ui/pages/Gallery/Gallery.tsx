@@ -7,34 +7,60 @@ import { GalleryContext } from './context/GalleryProvider';
 import { Card, CardFooter, CardHeader, CardTitle } from '@/ui/components/Card/Card';
 import { Button } from '@/ui/components/Button/Button';
 import Rectangle from '@/app/assets/Rectangle.svg';
-import Photo from '@/modules/Photo/domain/Photo';
+import cn from '@/app/lib/utils';
+import { toast } from '@/ui/components/Toast/use-toast';
+import { ToastAction } from '@/ui/components/Toast/toast';
 
 function Gallery() {
-  const { getPhotos } = useContext(GalleryContext);
-  const [page, setPage] = useState(0);
-  const [limit, setLimit] = useState(9);
+  const { getPhotos, storePhotos, getStoredPhotos, addSavedPhoto, deleteSavedPhoto } = useContext(GalleryContext);
+
+  const [page, setPage] = useState(1);
+  const limit = 12;
+
   const { data, isLoading } = useQuery({
-    queryKey: ['movements', page, limit],
+    queryKey: ['photolist', page, limit],
     queryFn: () => getPhotos(page, limit),
   });
-  const [savedData, setSavedData] = useState<Photo[]>([]);
-
   useEffect(() => {
     if (data) {
-      setSavedData((prev) => [...prev, ...data]);
+      storePhotos(data);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   return (
     <div className="flex flex-col items-center justify-center space-y-5">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {savedData?.length > 0
-          ? savedData?.map((item) => (
-              <Card key={item.id} className="max-w-xs hover:ring-1">
+        {getStoredPhotos()?.length > 0
+          ? getStoredPhotos()?.map((item) => (
+              <Card key={Math.random()} className="max-w-xs hover:ring-1">
                 <CardHeader className="relative">
                   <div className="absolute right-8 top-5">
-                    <Button size="icon" variant="secondary">
-                      <Bookmark className="text-primary" />
+                    <Button
+                      size="icon"
+                      variant="secondary"
+                      onClick={() => {
+                        if (item.saved) {
+                          deleteSavedPhoto(item.id);
+                          toast({
+                            variant: 'destructive',
+                            title: 'Succesfully deleted',
+                            description: 'The photo was deleted from your saved photos.',
+                            action: (
+                              <ToastAction altText="Try again" onClick={() => addSavedPhoto(item)}>
+                                Undo
+                              </ToastAction>
+                            ),
+                          });
+                        } else {
+                          addSavedPhoto(item);
+                          toast({
+                            description: 'The photo was saved.',
+                          });
+                        }
+                      }}
+                    >
+                      <Bookmark className={cn('text-primary', item.saved && 'fill-primary')} />
                     </Button>
                   </div>
                   <div className="w-full h-44">
@@ -55,7 +81,7 @@ function Gallery() {
                 </CardFooter>
               </Card>
             ))
-          : [...Array(10).keys()].map((index) => (
+          : [...Array(12).keys()].map((index) => (
               <Card key={index} className="max-w-xs hover:ring-1">
                 <CardHeader>
                   <div className="w-full">
@@ -73,14 +99,13 @@ function Gallery() {
               </Card>
             ))}
       </div>
-      {savedData.length > 0 && (
+      {getStoredPhotos().length > 0 && (
         <div>
           <Button
             className="mt-4"
             variant="secondary"
             disabled={isLoading}
             onClick={() => {
-              setLimit(limit + 9);
               setPage(page + 1);
             }}
           >

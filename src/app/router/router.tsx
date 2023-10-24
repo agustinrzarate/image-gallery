@@ -6,23 +6,28 @@ import Loader from './Loader/Loader';
 import Gallery from '@/ui/pages/Gallery/Gallery';
 import SidebarLayout from '@/ui/components/Sidebar/Sidebar';
 import GalleryLayout from '@/ui/pages/Gallery/GalleryLayout';
+import SavedImages from '@/ui/pages/Gallery/SavedImages';
+import { ProtectedRoute } from './ProtectedRoute/ProtectedRoute';
+import { AuthProvider } from '@/ui/pages/Auth/context/AuthProvider';
 
 const SignIn = lazy(() => import('@/ui/pages/Auth/SignIn/SignIn'));
 
 const Router = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
-      // eslint-disable-next-line react/jsx-no-useless-fragment
-      <>
-        <Route errorElement={<ErrorPage />}>
+      <Route errorElement={<ErrorPage />}>
+        <Route element={<AuthProvider />}>
           <Route path="/" element={<SignIn />} />
-          <Route element={<SidebarLayout />}>
-            <Route element={<GalleryLayout />}>
-              <Route path="/gallery" element={<Gallery />} />
+          <Route element={<ProtectedRoute />}>
+            <Route element={<SidebarLayout />}>
+              <Route element={<GalleryLayout />}>
+                <Route path="/gallery" element={<Gallery />} />
+                <Route path="/gallery/saved" element={<SavedImages />} />
+              </Route>
             </Route>
           </Route>
         </Route>
-      </>
+      </Route>
     )
   );
   return (
