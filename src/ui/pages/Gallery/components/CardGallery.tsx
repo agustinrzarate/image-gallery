@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 import { Bookmark } from 'lucide-react';
 import cn from '@/app/lib/utils';
 
-import Rectangle from '@/app/assets/Rectangle.svg';
+import Rectangle from '@/app/assets/rectangle.svg';
 
 import { PhotoStore } from '@/modules/Photo/infrastructure/photoStore';
 import { Button } from '@/ui/components/Button/Button';

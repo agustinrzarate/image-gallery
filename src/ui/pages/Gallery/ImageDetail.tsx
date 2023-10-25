@@ -9,7 +9,7 @@ import cn from '@/app/lib/utils';
 import { GalleryContext } from './context/GalleryProvider';
 import { toast } from '@/ui/components/Toast/use-toast';
 import { ToastAction } from '@/ui/components/Toast/toast';
-import Rectangle from '@/app/assets/Rectangle.svg';
+import Rectangle from '@/app/assets/rectangle.svg';
 
 function ImageDetail() {
   const { addSavedPhoto, deleteSavedPhoto, downloadPhoto } = useContext(GalleryContext);

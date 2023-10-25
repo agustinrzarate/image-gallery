@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { GalleryContext } from './context/GalleryProvider';
 import { Card, CardFooter, CardHeader, CardTitle } from '@/ui/components/Card/Card';
 import { Button } from '@/ui/components/Button/Button';
-import Rectangle from '@/app/assets/Rectangle.svg';
+import Rectangle from '@/app/assets/rectangle.svg';
 import { toast } from '@/ui/components/Toast/use-toast';
 import { ToastAction } from '@/ui/components/Toast/toast';
 import { PhotoStore } from '@/modules/Photo/infrastructure/photoStore';
