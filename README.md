@@ -1,31 +1,54 @@
 
-# Documentation in progress ...
-----------------------------------------------------------------------------------
+# Image gallery
 
-# React + TypeScript + Vite
+Create your own gallery of your favorite images!
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+----
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Run Locally
 
-## Expanding the ESLint configuration
+Clone the project
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+```bash
+  git clone https://github.com/agustinrzarate/image-gallery.git
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Go to the project directory
+
+```bash
+  cd image-gallery
+```
+
+Install dependencies
+
+```bash
+  pnpm install
+```
+
+Start the server
+
+```bash
+  pnpm dev
+```
+
+
+## Tech Stack
+
+**Client:** React, Zustand, React Query , TailwindCSS, Radix UI and custom components from shadcn/ui (this uses radix behind)
+
+## Code rules 
+prettier, eslint-config-airbnb
+
+## Demo
+
+[Image gallery](https://image-gallery-sepia-sigma.vercel.app/)
+## Features
+
+- Dark and Light mode (by system preferences)
+- Responsive design
+- Local authentication
+- Image gallery 
+- Saving images locally
+- Downloading images
+
