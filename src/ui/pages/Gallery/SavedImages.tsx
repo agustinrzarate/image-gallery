@@ -32,7 +32,7 @@ function SavedImages() {
   };
   return (
     <div className={cn('flex flex-col items-center space-y-14 h-full', savedPhotos.length === 0 && 'justify-center')}>
-      <h3 className=" text-2xl text-left w-full font-semibold text-muted-foreground">Saved images</h3>
+      <h3 className=" text-2xl text-left w-full font-semibold text-muted-foreground mt-9">Saved images</h3>
 
       {savedPhotos.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

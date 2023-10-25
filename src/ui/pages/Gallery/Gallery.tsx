@@ -52,7 +52,7 @@ function Gallery() {
 
   return (
     <div className="flex flex-col items-center justify-center space-y-14">
-      <h3 className=" text-2xl text-left w-full font-semibold text-muted-foreground">Gallery</h3>
+      <h3 className=" text-2xl text-left w-full font-semibold text-muted-foreground mt-9">Gallery</h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-10">
         {getStoredPhotos()?.length > 0
           ? getStoredPhotos()?.map((item) => (
