@@ -1,11 +1,18 @@
 import { createContext, PropsWithChildren, useMemo } from 'react';
+
+import useGallery, { PhotoStore } from '@/modules/Photo/infrastructure/photoStore';
+
+import { getItemLocalStorage } from '@/app/localStorage/getItem';
+import { KeysLocalStorage } from '@/app/localStorage/keys';
+
+import Photo from '@/modules/Photo/domain/Photo';
+
+import savePhotoRepository from '@/modules/Photo/application/savePhoto';
+import downloadPhotoRepository from '@/modules/Photo/application/downloadPhoto';
+import deleteSavedPhotoRepository from '@/modules/Photo/application/deleteSavedPhoto';
 import PhotoRepository from '@/modules/Photo/domain/PhotoRepository';
 import getPhotosRepository from '@/modules/Photo/application/getPhotos';
 import getInfoRepository from '@/modules/Photo/application/getInfo';
-import useGallery, { PhotoStore } from '@/modules/Photo/infrastructure/photoStore';
-import Photo from '@/modules/Photo/domain/Photo';
-import { getItemLocalStorage } from '@/app/localStorage/getItem';
-import { KeysLocalStorage } from '@/app/localStorage/keys';
 
 type IGalleryContext = PhotoRepository & {
   storePhotos: (photos: Photo[]) => void;
@@ -44,15 +51,19 @@ export default function GalleryProvider({ repository, children }: PropsWithChild
 
     function addSavedPhoto(photo: Photo) {
       savePhoto(photo);
-      return repository.addSavedPhoto(photo);
+      return savePhotoRepository(repository, photo);
     }
 
     function deleteSavedPhoto(id: string) {
       deletePhoto(id);
-      return repository.deleteSavedPhoto(id);
+      return deleteSavedPhotoRepository(repository, id);
     }
 
-    return { getPhotos, getInfo, storePhotos, getStoredPhotos, addSavedPhoto, deleteSavedPhoto };
+    function downloadPhoto(url: string, name: string) {
+      return downloadPhotoRepository(repository, url, name);
+    }
+
+    return { getPhotos, getInfo, storePhotos, getStoredPhotos, addSavedPhoto, deleteSavedPhoto, downloadPhoto };
   }, [repository, updateStatePhotos, statePhotos, savePhoto, deletePhoto]);
 
   return <GalleryContext.Provider value={value}>{children}</GalleryContext.Provider>;

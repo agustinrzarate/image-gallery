@@ -9,6 +9,7 @@ import GalleryLayout from '@/ui/pages/Gallery/GalleryLayout';
 import SavedImages from '@/ui/pages/Gallery/SavedImages';
 import { ProtectedRoute } from './ProtectedRoute/ProtectedRoute';
 import { AuthProvider } from '@/ui/pages/Auth/context/AuthProvider';
+import ImageDetail from '@/ui/pages/Gallery/ImageDetail';
 
 const SignIn = lazy(() => import('@/ui/pages/Auth/SignIn/SignIn'));
 
@@ -23,6 +24,7 @@ const Router = () => {
               <Route element={<GalleryLayout />}>
                 <Route path="/gallery" element={<Gallery />} />
                 <Route path="/gallery/saved" element={<SavedImages />} />
+                <Route path="/gallery/image/:id" element={<ImageDetail />} />
               </Route>
             </Route>
           </Route>

@@ -95,7 +95,7 @@ function SidebarLayout() {
       </div>
 
       <div className={cn(isSidebarOpen && 'blur-sm pointer-events-none', ' md:ml-60 w-full md:blur-0 h-screen')}>
-        <div className="md:hidden">
+        <div className="md:hidden absolute top-3">
           <Button onClick={() => setIsSidebarOpen(true)} size="icon">
             <HamburgerMenuIcon />
           </Button>

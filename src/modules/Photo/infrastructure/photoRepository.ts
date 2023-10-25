@@ -33,7 +33,7 @@ export default function photoRepository(): IPhotoRepository {
     addSavedPhoto: function addSavedPhoto(photo: Photo) {
       const savedPhotos = getItemLocalStorage(KeysLocalStorage.savedPhotos);
       const photos = JSON.parse(savedPhotos || '[]');
-      photos.push(photo);
+      photos.push({ ...photo, saved: true });
       setItemLocalStorage(KeysLocalStorage.savedPhotos, photos);
     },
     deleteSavedPhoto: function deleteSavedPhoto(id: string) {
@@ -41,6 +41,23 @@ export default function photoRepository(): IPhotoRepository {
       const photos = JSON.parse(savedPhotos || '[]');
       const newPhotos = photos.filter((photo: Photo) => photo.id !== id);
       setItemLocalStorage(KeysLocalStorage.savedPhotos, newPhotos);
+    },
+    downloadPhoto: async function downloadPhoto(url_download: string, name: string) {
+      const response = await fetch(url_download);
+
+      const blobImage = await response.blob();
+
+      const href = URL.createObjectURL(blobImage);
+
+      const anchorElement = document.createElement('a');
+      anchorElement.href = href;
+      anchorElement.download = name;
+
+      document.body.appendChild(anchorElement);
+      anchorElement.click();
+
+      document.body.removeChild(anchorElement);
+      window.URL.revokeObjectURL(href);
     },
   };
 }

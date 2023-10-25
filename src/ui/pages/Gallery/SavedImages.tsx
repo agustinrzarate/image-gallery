@@ -1,69 +1,45 @@
-import { useContext, useEffect, useState } from 'react';
-
-import { Bookmark } from 'lucide-react';
+import { useContext } from 'react';
+import { Link } from 'react-router-dom';
 
 import { GalleryContext } from './context/GalleryProvider';
-import { Card, CardFooter, CardHeader, CardTitle } from '@/ui/components/Card/Card';
-import { Button } from '@/ui/components/Button/Button';
-import Rectangle from '@/app/assets/Rectangle.svg';
 import cn from '@/app/lib/utils';
+
 import { getItemLocalStorage } from '@/app/localStorage/getItem';
 import { KeysLocalStorage } from '@/app/localStorage/keys';
 import { PhotoStore } from '@/modules/Photo/infrastructure/photoStore';
 
 import { toast } from '@/ui/components/Toast/use-toast';
 import { ToastAction } from '@/ui/components/Toast/toast';
+import CardGallery from './components/CardGallery';
 
 function SavedImages() {
   const { deleteSavedPhoto, addSavedPhoto } = useContext(GalleryContext);
   const savedPhotosJson = getItemLocalStorage(KeysLocalStorage.savedPhotos);
   const savedPhotos = JSON.parse(savedPhotosJson || '[]') as PhotoStore[];
 
+  const onDelete = (item: PhotoStore) => {
+    deleteSavedPhoto(item.id);
+    toast({
+      variant: 'destructive',
+      title: 'Succesfully deleted',
+      description: 'The photo was deleted from your saved photos.',
+      action: (
+        <ToastAction altText="Try again" onClick={() => addSavedPhoto(item)}>
+          Undo
+        </ToastAction>
+      ),
+    });
+  };
   return (
-    <div className={cn('flex flex-col items-center space-y-5 h-full', savedPhotos.length === 0 && 'justify-center')}>
+    <div className={cn('flex flex-col items-center space-y-14 h-full', savedPhotos.length === 0 && 'justify-center')}>
+      <h3 className=" text-2xl text-left w-full font-semibold text-muted-foreground">Saved images</h3>
+
       {savedPhotos.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {savedPhotos?.map((item) => (
-            <Card key={Math.random()} className="max-w-xs hover:ring-1">
-              <CardHeader className="relative">
-                <div className="absolute right-8 top-5">
-                  <Button
-                    size="icon"
-                    variant="secondary"
-                    onClick={() => {
-                      deleteSavedPhoto(item.id);
-                      toast({
-                        variant: 'destructive',
-                        title: 'Succesfully deleted',
-                        description: 'The photo was deleted from your saved photos.',
-                        action: (
-                          <ToastAction altText="Try again" onClick={() => addSavedPhoto(item)}>
-                            Undo
-                          </ToastAction>
-                        ),
-                      });
-                    }}
-                  >
-                    <Bookmark className={cn('fill-primary text-primary')} />
-                  </Button>
-                </div>
-                <div className="w-full h-44">
-                  <img
-                    src={item.download_url ? item.download_url : Rectangle}
-                    alt={`of ${item.author}`}
-                    className=" rounded-xl w-full min-w-[150px] h-full object-cover"
-                  />
-                </div>
-                <div className="relative">
-                  <CardTitle className="absolute -top-7 bg-background p-2 rounded-md border left-1/3">
-                    {item.author}
-                  </CardTitle>
-                </div>
-              </CardHeader>
-              <CardFooter className="flex justify-center border-t">
-                <Button className="mt-4">More info</Button>
-              </CardFooter>
-            </Card>
+            <Link to={`/gallery/image/${item.id}`} key={Math.random()} className=" cursor-default">
+              <CardGallery item={item} onClickBookmark={onDelete} />
+            </Link>
           ))}
         </div>
       ) : (
