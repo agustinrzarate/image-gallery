@@ -28,6 +28,7 @@ const Router = () => {
               </Route>
             </Route>
           </Route>
+          <Route path="*" element={<ErrorPage />} />
         </Route>
       </Route>
     )
